@@ -1,12 +1,12 @@
 import express from "express"
 import cors from "cors"
 import './config/ecommersConfig.js'
-import eCommerce from "./routes/ecommerceRoute.js";
+import eCommerce from "./routes/productApi.js";
 // const { v4: uuidv4 } = require('uuid');
 // const products = require("./data/products.json")
 
 const app = express();
-const port = 2030
+const port = 2031;
 app.use(cors());
 app.use(express.json());
 app.use(eCommerce);

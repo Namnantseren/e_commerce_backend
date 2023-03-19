@@ -1,6 +1,7 @@
 import express from "express"
 import fs from "fs"
-import myModel from "../model/ecommerseModel.js"
+import mySchema from "../model/productModel.js"
+import { getProduct } from "../services/productService.js";
 
 const eCommerce = express.Router();
 
@@ -70,14 +71,12 @@ eCommerce.post("/users", (request, response) => {
     })
   });
   
-  eCommerce.get("/users", (request, response) => {
-      fs.readFile("./data/products.json", (error, data) => {
-        if(error){
-          response.status(500).send({messege : error})
-        }else{
-         response.json(JSON.parse(data))
-        }
-  })})
+  eCommerce.get("/products", async (request, response) => {
+    const query = request.query;
+    const result = await getProduct(query.name);
+    console.log(result);
+    response.status(200).send(result);
+  })
   
   eCommerce.post("/registerUser", (request, response) => {
     console.log(request.body)

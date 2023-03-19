@@ -14,8 +14,8 @@ const schema = new mongoose.Schema(
     spec: { type: Array, required: false},
     quantity: { type: Number, required: true },
   },
-  { collection: "e_commerce" }
+  { collection: "products" }
 );
 
-const mySchema = mongoose.model("E_commerse", schema)
+const mySchema = mongoose.model("products", schema)
 export default mySchema;
