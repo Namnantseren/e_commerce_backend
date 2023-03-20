@@ -1,7 +1,8 @@
-import express from "express"
-import cors from "cors"
-import './config/ecommersConfig.js'
+import express from "express";
+import cors from "cors";
+import "./config/ecommersConfig.js";
 import eCommerce from "./routes/productApi.js";
+import cloudinary from "./config/cloudinary.js";
 // const { v4: uuidv4 } = require('uuid');
 // const products = require("./data/products.json")
 
@@ -12,8 +13,24 @@ app.use(express.json());
 app.use(eCommerce);
 
 app.listen(port, () => {
-    console.log(`Server started ${port} okey noggo`);
-})
+  console.log(`Server started ${port} okey noggo`);
+});
+
+const res = cloudinary.v2.uploader.upload(
+  "https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",{
+  folder: "Product",
+  public_id: "Selected"
+}
+);
+
+res
+  .then((data) => {
+    console.log(data);
+    console.log(data.secure_url);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // let Data = [
 //     {
@@ -158,7 +175,7 @@ app.listen(port, () => {
 //       sale: 247,
 //       category: "laptop",
 //     },
-  
+
 //     {
 //       description: "Philips Hue smart LED bulbs",
 //       spec: [{ type: "A19" }, { wattage: "9.5W" }, { output: "800 Lumens" }],
@@ -171,7 +188,7 @@ app.listen(port, () => {
 //       sale: 2,
 //       category: "appliances",
 //     },
-  
+
 //     {
 //       description: "Philips HD6975/00 25 Litre Digital Oven Toaster Grill",
 //       spec: [
@@ -188,7 +205,7 @@ app.listen(port, () => {
 //       sale: 27,
 //       category: "appliances",
 //     },
-  
+
 //     {
 //       description: "XP-PEN Artist12 11.6 Inch FHD Drawing Monitor",
 //       spec: [
@@ -205,7 +222,7 @@ app.listen(port, () => {
 //       sale: 12,
 //       category: "computers & tablets",
 //     },
-  
+
 //     {
 //       description:
 //         "Apple 20W USB-C Power Adapter - iPhone Charger with Fast Charging Capability, Type C Wall Charger",
@@ -396,7 +413,7 @@ app.listen(port, () => {
 //       sale: 0.1,
 //       category: "tablets",
 //     },
-  
+
 //     {
 //       description:
 //         "The earliest existing record of a telescope was a 1608 patent submitted to the government in the Netherlands by Middelburg spectacle maker Hans Lipperhey for a refracting telescope.[",
@@ -410,7 +427,7 @@ app.listen(port, () => {
 //       sale: 10.0,
 //       category: "telescope",
 //     },
-  
+
 //     {
 //       description:
 //         "A computer is a machine that can be programmed to carry out sequences of arithmetic or logical operations (computation) automatically.",
@@ -427,7 +444,7 @@ app.listen(port, () => {
 //       sale: 10.0,
 //       category: "computers & tablets",
 //     },
-  
+
 //     {
 //       description:
 //         "A tablet computer, commonly shortened to tablet, is a mobile device, typically with a mobile operating system and touchscreen display processing circuitry, and a rechargeable battery in a single, thin and flat package. ",
@@ -443,14 +460,14 @@ app.listen(port, () => {
 //       sale: 50.0,
 //       category: "computers & tablets",
 //     },
-  
+
 //     {
 //       description:
 //         "A video game console is an electronic device that outputs a video signal or image to display a video game that can be played with a game controller.",
 //       spec: [
 //         { DisplaySize: "6.8 inch" },
 //         { CPU: "Medea Teck Helio G 95.8 core" },
-  
+
 //         { RAM: "11.6GB" },
 //       ],
 //       name: "I Pad",
@@ -462,7 +479,7 @@ app.listen(port, () => {
 //       sale: 9.0,
 //       category: "gaming console",
 //     },
-  
+
 //     {
 //       description:
 //         "FOOD STEAMER: With 7.4 quarts of cooking capacity & 2 separate steaming containers, you can cook a full meal with sides with one simple turn of a switch.",
@@ -538,4 +555,3 @@ app.listen(port, () => {
 //       category: "computers & tablets",
 //     },
 //   ];
-  
