@@ -26,16 +26,16 @@ const storage = multer.diskStorage({
     cb(null, "/tmp");
   },
   filename: (rq,file, cb) => {
-    // const ext = extractExtansion(file.originalname);
-    // const newName = nanoid() + '+' + ext;
+    const ext = extractExtansion(file.originalname);
+    const newName = nanoid() + '+' + ext;
     cb(null, file.originalname);
   }
 })
 
-// const extractExtansion = (name) => {
-//   const splitted = name.split(".");
-//   return splitted[splitted.lenght - 1];
-// }
+const extractExtansion = (name) => {
+  const splitted = name.split(".");
+  return splitted[splitted.lenght - 1];
+}
 
 const upload = multer({storage: storage})
 
@@ -47,6 +47,10 @@ eCommerce.post("/products", upload.single("file"),
     res.status(200).send(result)
   }
 )
+
+eCommerce.delete(`/products/:id`, (req, res) => {
+  console.log("req body delete",req.body);
+})
 
 // eCommerce.post("/registerUser", (request, response) => {
 //   console.log(request.body)
