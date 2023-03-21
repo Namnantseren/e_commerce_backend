@@ -6,13 +6,14 @@ const schema = new mongoose.Schema(
       type: String,
       require: true,
     },
-    image: { type: String, required: true },
-    deskription: { type: String, required: true },
+    image: { type: String, required: false },
+    description: { type: String, required: false },
     stock: { type: Number, required: false },
-    price: Number,
+    price: {type: Number, required: false},
     date: { type: Date, default: Date.now },
     spec: { type: Array, required: false},
-    quantity: { type: Number, required: true },
+    quantity: { type: Number, required: false },
+    category: String,
   },
   { collection: "products" }
 );

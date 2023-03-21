@@ -1,13 +1,18 @@
 import mySchema from "../model/productModel.js";
 
-export async function getProduct(){
-    let findProd = await mySchema.find({})
-    console.log('findProd :' ,findProd);
-    return findProd;
+export async function getProduct() {
+  let findProd = await mySchema.find({});
+  return findProd;
 }
 
-export async function postProduct() {
-    let createProd = await mySchema.create();
-    console.log("createProd: ", createProd);
-    return createProd
+export async function postProduct(product) {
+  let createProd = await mySchema.create({
+    name: product.name,
+    image: product.image,
+    stock: product.price,
+    sale: product.stock,
+    category: product.category,
+  });
+  console.log("createProd: ", createProd);
+  return createProd;
 }

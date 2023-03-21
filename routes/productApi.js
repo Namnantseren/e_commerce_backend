@@ -1,74 +1,52 @@
 import express from "express";
 import fs from "fs";
-import mySchema from "../model/productModel.js";
+import { nanoid } from "nanoid";
 import { getProduct, postProduct } from "../services/productService.js";
+import multer from "multer";
+import cloudinary from "../config/cloudinary.js";
 
 const eCommerce = express.Router();
 
-eCommerce.post("/products", async (request, response) => {
-  const query = request.query;
-  let postedProduct = await postProduct(
-    query.name,
-    query.image,
-    query.price,
-    query.stock,
-    query.category
-  );
-  response.status(200).send(postedProduct);
-});
-
-//   eCommerce.put("/users/:id", (req, res) => {
-//     console.log(req.body.productObject)
-//     fs.readFile("./data/products.json", (err, data) => {
-//       if(err){
-//         res.status(500).send({messege: err})
-//       }else{
-//         let edits = JSON.parse(data);
-//         let findData = edits.find((edit) => edit.id === req.params.id)
-//         edits[edits.indexOf(findData)] = req.body.productObject
-
-//         fs.writeFile("./data/products.json", JSON.stringify(edits), (err) => {
-//           if(err){
-//             res.status(500).send({messege: err})
-//           }else{
-//             res
-//               .status(200)
-//               .send({messege: "ok" })
-//           }
-//         })
-//       }
-//     })
-//   })
-
-//   eCommerce.delete("/users/:id", (request, response) => {
-//     console.log(request.body)
-//     fs.readFile("./data/products.json", (error, data) => {
-//       if(error){
-//         response.status(500).send({messege : error})
-//       }else {
-//         let new_products = JSON.parse(data);
-//         new_products = new_products.filter((new_products) => new_products.id !== request.params.id)
-//         fs.writeFile("./data/products.json", JSON.stringify(new_products), (error) => {
-//           if(error){
-//             response.status(500).send({messege : error});
-//           }else {
-//             response
-//             .status(200)
-//             .send({messege : "Product arrived"});
-//           }
-//         })
-//       }
-//     })
-//   });
+// eCommerce.post("/products", async (request, response) => {
+//   let postedProduct = await postProduct(request.body);
+//   response.status(200).send(postedProduct);
+//   console.log('product: ', request.body);
+// });
 
 eCommerce.get("/products", async (request, response) => {
   const query = request.query;
   const result = await getProduct(query.name);
-  console.log(result);
   response.status(200).send(result);
 });
 
+//image------
 
+const storage = multer.diskStorage({
+  destination: (rq, file, cb) => {
+    cb(null, "/tmp");
+  },
+  filename: (rq,file, cb) => {
+    // const ext = extractExtansion(file.originalname);
+    // const newName = nanoid() + '+' + ext;
+    cb(null, file.originalname);
+  }
+})
+
+// const extractExtansion = (name) => {
+//   const splitted = name.split(".");
+//   return splitted[splitted.lenght - 1];
+// }
+
+const upload = multer({storage: storage})
+
+eCommerce.post("/products", upload.single("file"), 
+  async (req, res) => {
+    const {secure_url} = await cloudinary.uploader.upload(req.file.path, {folder: "Product"})
+    const newProduct = { image: secure_url, ...JSON.parse(req.body.object)};
+    const result = await postProduct(newProduct);
+    res.status(200).send(result)
+  }
+)
 
 // eCommerce.post("/registerUser", (request, response) => {
 //   console.log(request.body)

@@ -16,22 +16,6 @@ app.listen(port, () => {
   console.log(`Server started ${port} okey noggo`);
 });
 
-const res = cloudinary.v2.uploader.upload(
-  "https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",{
-  folder: "Product",
-  public_id: "Selected"
-}
-);
-
-res
-  .then((data) => {
-    console.log(data);
-    console.log(data.secure_url);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
 // let Data = [
 //     {
 //       description:
