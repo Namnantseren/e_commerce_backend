@@ -12,8 +12,8 @@ export async function addUser(registerUser) {
     const user = await userSchema.create({
       name: registerUser.name,
       email: registerUser.email,
-      password: registerUser.password,
-      repassword: registerUser.repassword,
+      password: hashedPassword,
+      repassword: hashedPassword,
     });
     return await user.save();
   } else {
@@ -21,11 +21,4 @@ export async function addUser(registerUser) {
       message: "Password was not hashed successfully",
     });
   }
-  // let createUser = await userSchema.create({
-  //     name: registerUser.name,
-  //     email: registerUser.email,
-  //     password: registerUser.password,
-  //     repassword: registerUser.repassword,
-  // })
-  return createUser;
 }
