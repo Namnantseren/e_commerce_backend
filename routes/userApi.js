@@ -33,8 +33,8 @@ user.post("/login", async(req, res) => {
           success: true,
           status: "User successfully loged in",
           email: email,
-          password: password,
-          token: token,
+          data: loginUser,
+          token: token
         }
       );
       return;
